@@ -96,5 +96,8 @@ COPY scripts/emulator-monitoring.sh /opt/
 COPY scripts/start-novnc.sh /opt/
 RUN chmod +x /opt/*.sh
 
-# Set the entrypoint
-ENTRYPOINT ["/opt/start-novnc.sh"]
+# Add Supervisor configuration to run both services
+COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Set the entrypoint to Supervisor
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
