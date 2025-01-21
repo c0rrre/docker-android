@@ -22,10 +22,18 @@ RUN apt update -y && \
   libgl1-mesa-dri \
   socat \
   htop \
-  iproute2 && \
+  iproute2 \
+  git \
+  nginx && \
   rm -rf /var/lib/apt/lists/*
 
-# Arguments that can be overriden at build-time.
+# Install noVNC and websockify
+RUN mkdir -p /opt/novnc && \
+  git clone https://github.com/novnc/noVNC.git /opt/novnc && \
+  git clone https://github.com/novnc/websockify.git /opt/novnc/utils/websockify && \
+  chmod +x /opt/novnc/utils/launch.sh
+
+# Arguments that can be overridden at build-time.
 ARG INSTALL_ANDROID_SDK=1
 ARG API_LEVEL=33
 ARG IMG_TYPE=google_apis
@@ -57,9 +65,9 @@ ENV LD_LIBRARY_PATH "$ANDROID_SDK_ROOT/emulator/lib64:$ANDROID_SDK_ROOT/emulator
 # Set the working directory to /opt
 WORKDIR /opt
 
-# Exposing the Android emulator console port
-# and the ADB port.
-EXPOSE 5554 5555
+# Exposing the Android emulator console port,
+# the ADB port, and noVNC port.
+EXPOSE 5554 5555 6080
 
 # Initializing the required directories.
 RUN mkdir /root/.android/ && \
@@ -70,15 +78,20 @@ RUN mkdir /root/.android/ && \
 COPY keys/* /root/.android/
 
 # The following layers will download the Android command-line tools
-# to install the Android SDK, emulator and system images.
+# to install the Android SDK, emulator, and system images.
 # It will then install the Android SDK and emulator.
 COPY scripts/install-sdk.sh /opt/
 RUN chmod +x /opt/install-sdk.sh
 RUN /opt/install-sdk.sh
 
-# Copy the container scripts in the image.
+# Copy the container scripts into the image.
 COPY scripts/start-emulator.sh /opt/
 COPY scripts/emulator-monitoring.sh /opt/
 RUN chmod +x /opt/*.sh
+
+# Start noVNC along with the emulator
+COPY scripts/start-novnc.sh /opt/
+RUN chmod +x /opt/start-novnc.sh
+
 # Set the entrypoint
 ENTRYPOINT ["/opt/start-emulator.sh"]
