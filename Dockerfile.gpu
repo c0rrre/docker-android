@@ -24,6 +24,7 @@ RUN apt update -y && \
   htop \
   iproute2 \
   git \
+  x11vnc \
   novnc \
   websockify \
   nginx \
