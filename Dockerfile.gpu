@@ -24,14 +24,10 @@ RUN apt update -y && \
   htop \
   iproute2 \
   git \
+  novnc \
+  websockify \
   nginx && \
   rm -rf /var/lib/apt/lists/*
-
-# Install noVNC and websockify
-RUN mkdir -p /opt/novnc && \
-  git clone https://github.com/novnc/noVNC.git /opt/novnc && \
-  git clone https://github.com/novnc/websockify.git /opt/novnc/utils/websockify && \
-  chmod +x /opt/novnc/utils/launch.sh
 
 # Arguments that can be overridden at build-time.
 ARG INSTALL_ANDROID_SDK=1
@@ -94,4 +90,4 @@ COPY scripts/start-novnc.sh /opt/
 RUN chmod +x /opt/start-novnc.sh
 
 # Set the entrypoint
-ENTRYPOINT ["/opt/start-emulator.sh"]
+ENTRYPOINT ["/opt/start-novnc.sh"]

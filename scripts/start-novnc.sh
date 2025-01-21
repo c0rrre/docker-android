@@ -7,6 +7,5 @@ export DISPLAY=:0
 # Start the Android emulator in the background
 /opt/start-emulator.sh &
 
-# Start noVNC server
-/opt/novnc/utils/launch.sh --vnc localhost:5900 --listen 6080 &
-wait
+# Start websockify to bridge WebSocket to VNC server (localhost:5900)
+websockify --web /usr/share/novnc/ 6080 localhost:5900 &
