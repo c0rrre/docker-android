@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Start the Android emulator (if not already started)
+echo "Starting Android emulator..."
+/opt/start-emulator.sh &
+
 # Wait for the Android emulator to be ready
 echo "Waiting for the Android emulator to be ready..."
 sleep 5
