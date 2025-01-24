@@ -10,7 +10,7 @@ sleep 5
 
 # Start the VNC server (if not already started)
 echo "Starting VNC server..."
-x11vnc -display :0 -forever -listen 0.0.0.0 -noipv6 &
+x11vnc -display $DISPLAY -forever -listen 0.0.0.0 -noipv6 &
 
 # Wait a bit to ensure VNC server is ready
 sleep 5

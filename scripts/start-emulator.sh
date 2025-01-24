@@ -48,7 +48,7 @@ fi
 # We also set the GPU mode to `host` to force the emulator to use
 # GPU acceleration.
 if [ "$GPU_ACCELERATED" == "true" ]; then
-  export DISPLAY=":0.0"
+  export DISPLAY=":0"
   export GPU_MODE="host"
   Xvfb "$DISPLAY" -screen 0 1920x1080x16 -nolisten tcp &
 else
