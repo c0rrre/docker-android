@@ -6,7 +6,7 @@ echo "Starting Android emulator..."
 
 # Wait for the Android emulator to be ready
 echo "Waiting for the Android emulator to be ready..."
-sleep 5
+sleep 10
 
 # Start the VNC server (if not already started)
 echo "Starting VNC server..."
