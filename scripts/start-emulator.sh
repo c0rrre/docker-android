@@ -50,7 +50,7 @@ fi
 if [ "$GPU_ACCELERATED" == "true" ]; then
   export DISPLAY=":0"
   export GPU_MODE="host"
-  Xvfb "$DISPLAY" -screen 0 1920x1080x16 -nolisten tcp &
+  Xvfb "$DISPLAY" -screen 0 1920x1080x16 &
 else
   export GPU_MODE="swiftshader_indirect"
 fi
@@ -73,9 +73,7 @@ emulator \
   -no-boot-anim \
   -cores $OPT_CORES \
   -ranchu \
-  $AUTH_FLAG \
-  -no-window \
-  -no-snapshot  || update_state "ANDROID_STOPPED"
+  $AUTH_FLAG  || update_state "ANDROID_STOPPED"
 
 
   # -qemu \
